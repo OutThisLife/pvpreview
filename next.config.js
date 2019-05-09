@@ -11,7 +11,7 @@ const plugins = [
 ]
 
 const config = {
-  targets: 'serverless',
+  target: 'serverless',
   webpack(config) {
     config.module.rules.push({
       test: /\.(png|jpg|gif|svg|ico)$/i,

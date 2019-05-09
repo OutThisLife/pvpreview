@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "next",
     "start": "serve out",
-    "build": "next build && next export"
+    "build": "next build && next export",
+    "now-build": "next build"
   },
   "dependencies": {
     "@babel/core": "^7.4.4",
