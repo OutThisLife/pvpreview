@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "name": "pvpreview",
+  "builds": [
+    {
+      "src": "app/next.config.js",
+      "use": "@now/next"
+    }
+  ]
+}
