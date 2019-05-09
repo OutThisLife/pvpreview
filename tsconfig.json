@@ -25,5 +25,5 @@
       }
     ]
   },
-  "exclude": ["**/*.spec", "app/out/**", "app/.next/**"]
+  "exclude": ["**/*.spec", "out/**", ".next/**"]
 }

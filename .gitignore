@@ -4,5 +4,3 @@ out/
 .env
 
 *.log
-
-static/font
