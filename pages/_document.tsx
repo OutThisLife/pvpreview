@@ -35,12 +35,18 @@ export default class extends Document<{ styleTags: React.ReactNode[] }> {
         <Head>
           <meta name="viewport" content="width=device-width, initial-scale=1" />
           <meta name="robots" content="index,follow" />
-          <meta key="canonical" name="canonical" content="https://www.pvpreview.com" />
+          <meta
+            key="canonical"
+            name="canonical"
+            content="https://www.pvpreview.com"
+          />
 
           <link
             rel="stylesheet"
-            href="//fonts.googleapis.com/css?family=Nanum+Gothic+Coding"
+            href="//cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css"
           />
+
+          <script src="//polyfill.io/v3/polyfill.min.js?flags=gated" />
 
           {styleTags}
         </Head>

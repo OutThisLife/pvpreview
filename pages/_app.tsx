@@ -1,9 +1,28 @@
+import '@/static/font/fonts.css'
+
+import Header from '@/components/Header'
+import pvpTheme, { flex } from '@/components/theme'
 import App, { Container } from 'next/app'
 import Head from 'next/head'
 import { createGlobalStyle, ThemeProvider } from 'styled-components'
-import { palette, theme } from 'styled-tools'
+import { font, palette } from 'styled-theme'
 
 export default class extends App {
+  public componentDidMount() {
+    if ('browser' in process) {
+      window.addEventListener('mousemove', this.handleMouseMove)
+    }
+  }
+
+  public componentWillUnmount() {
+    if ('browser' in process) {
+      window.removeEventListener('mousemove', this.handleMouseMove)
+    }
+  }
+
+  public handleMouseMove = ({ clientX: x, clientY: y }) =>
+    ((window as any).mouse = { x, y })
+
   public render() {
     const { Component, pageProps } = this.props
 
@@ -15,6 +34,7 @@ export default class extends App {
               <title key="title">pvpreview | all games suck</title>
             </Head>
 
+            <Header />
             <Component {...pageProps} />
             <GlobalStyles />
           </>
@@ -24,54 +44,48 @@ export default class extends App {
   }
 }
 
-const pvpTheme = {
-  font: 'Nanum Gothic Coding, sans-serif',
-
-  palette: {
-    base: '#000',
-    bg: '#fff',
-    primary: '#00f'
-  },
-}
-
 const GlobalStyles = createGlobalStyle`
   :root {
-    --g: calc(100vw / 40);
+    --g: 40;
+    --gs: calc(100vw / var(--g));
   }
 
   * {
     box-sizing: border-box;
   }
 
-  ::-webkit-scrollbar {
-    width: 3px;
-    height: 3px;
-    background: ${palette('primary')};
-  }
-
+  ::-webkit-scrollbar,
   ::-webkit-scrollbar-track {
-    background: ${palette('primary')};
+    width: 5px;
+    height: 5px;
+    background: ${palette('primary', 1)};
   }
 
   ::-webkit-scrollbar-thumb {
-    background: ${palette('bg')};
+    border: 1px solid ${palette('primary', 1)};
+    background: ${palette('primary', 0)};
   }
 
   ::selection {
-    color: ${palette('bg')};
-    background: ${palette('primary')};
+    color: ${palette('primary', 0)};
+    background: ${palette('primary', 2)};
+  }
+
+  html, body {
+    margin: 0;
+    padding: 0;
   }
 
   html {
-    color: ${palette('base')};
-    font-size: var(--g);
+    color: ${palette('primary', 0)};
+    font-size: ${flex(13, 32)};
     line-height: 1.75;
-    font-family: ${theme('font')};
+    font-family: ${font('primary')};
+    background: ${palette('primary', 1)};
   }
 
-  body {
-    background: ${palette('bg')};
+  a {
+    color: ${palette('primary', 1)};
+    text-decoration: none;
   }
 `
-
-export type PvPTheme = typeof pvpTheme
