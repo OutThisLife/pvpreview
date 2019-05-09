@@ -107,23 +107,33 @@ export default () => {
 
   return (
     <Wrapper ref={$wrapper} as="nav" column justify="space-evenly">
-      {reviews.map((r, i) => (
-        <Link
-          key={r.title}
-          className={idx === i ? 'active' : ''}
-          onMouseEnter={() => setIdx(i)}>
-          <span>
-            {r.title}
-            <Rating v={r.v} />
-          </span>
+      {reviews
+        .concat(reviews)
+        .concat(reviews)
+        .concat(reviews)
+        .concat(reviews)
+        .concat(reviews)
+        .concat(reviews)
+        .concat(reviews)
+        .concat(reviews)
+        .concat(reviews)
+        .map((r, i) => (
+          <Link
+            key={r.title}
+            className={idx === i ? 'active' : ''}
+            onMouseEnter={() => setIdx(i)}>
+            <span>
+              {r.title}
+              <Rating v={r.v} />
+            </span>
 
-          <div
-            style={{
-              backgroundImage: `url(${r.bg})`
-            }}
-          />
-        </Link>
-      ))}
+            <div
+              style={{
+                backgroundImage: `url(${r.bg})`
+              }}
+            />
+          </Link>
+        ))}
     </Wrapper>
   )
 }

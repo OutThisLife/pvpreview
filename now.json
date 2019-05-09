@@ -3,7 +3,7 @@
   "name": "pvpreview",
   "builds": [
     {
-      "src": "app/next.config.js",
+      "src": "next.config.js",
       "use": "@now/next"
     }
   ]
