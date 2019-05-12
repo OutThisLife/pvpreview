@@ -1,10 +1,10 @@
-import Reviews from '@/components/Reviews'
+import Full from '@/components/Review/Single'
 import styled from 'styled-components'
 
 const Wrapper = styled.section``
 
 export default () => (
   <Wrapper>
-    <Reviews />
+    <Full title="World of Warcraft" bg="/static/img/bg-wow.jpg" />
   </Wrapper>
 )

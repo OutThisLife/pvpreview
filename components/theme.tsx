@@ -1,11 +1,32 @@
+import { tint } from 'polished'
+
 const pvpTheme = {
   fonts: {
     primary:
-      'mn, "Maison Neue", -apple-system,BlinkMacSystemFont,"Segoe UI","Helvetica Neue",sans-serif'
+      'mn, "Maison Neue", -apple-system,BlinkMacSystemFont,"Segoe UI","Helvetica Neue",sans-serif',
+    heading: 'st, Georgia, "Times New Roman", serif'
   },
 
-  palette: {
-    primary: ['#fff', '#000', '#000']
+  colours: {
+    text: '#292929',
+    bg: '#fff',
+    primary: '#0000EE',
+    secondary: '#FF2FCA',
+
+    get inactive() {
+      return tint(0.5, this.text)
+    },
+
+    get loading() {
+      return tint(0.95, this.text)
+    }
+  },
+
+  sizes: {
+    maxWidth: '1600px',
+    phone: '0px',
+    tablet: '768px',
+    desktop: '1024px'
   }
 }
 

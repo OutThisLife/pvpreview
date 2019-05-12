@@ -43,7 +43,6 @@
   font-style: normal;
 }
 
-/*
 @font-face {
   font-family: 'mn';
   src: url('/static/font/MaisonNeue-Light.woff2') format('woff2'),
@@ -51,58 +50,47 @@
     url('/static/font/MaisonNeue-Light.ttf') format('truetype');
   font-weight: 300;
   font-style: normal;
-} */
-
-/* @font-face {
-	font-family: 'mn';
-	src: url('/static/font/MaisonNeue-LightItalic.woff2') format('woff2'),
-		url('/static/font/MaisonNeue-LightItalic.woff') format('woff'),
-		url('/static/font/MaisonNeue-LightItalic.ttf') format('truetype');
-	font-weight: 300;
-	font-style: italic;
-} */
-
-/*@font-face {
-	font-family: 'mn';
-	src: url('/static/font/MaisonNeue-BoldItalic.woff2') format('woff2'),
-		url('/static/font/MaisonNeue-BoldItalic.woff') format('woff'),
-		url('/static/font/MaisonNeue-BoldItalic.ttf') format('truetype');
-	font-weight: bold;
-	font-style: italic;
-}*/
-
-/*@font-face {
-	font-family: 'mn';
-	src: url('/static/font/MaisonNeue-Demi.woff2') format('woff2'),
-		url('/static/font/MaisonNeue-Demi.woff') format('woff'),
-		url('/static/font/MaisonNeue-Demi.ttf') format('truetype');
-	font-weight: normal;
-	font-style: normal;
-}*/
-
-/*@font-face {
-	font-family: 'mn';
-	src: url('/static/font/MaisonNeue-DemiItalic.woff2') format('woff2'),
-		url('/static/font/MaisonNeue-DemiItalic.woff') format('woff'),
-		url('/static/font/MaisonNeue-DemiItalic.ttf') format('truetype');
-	font-weight: normal;
-	font-style: italic;
-}*/
-
-/* @font-face {
-	font-family: 'mnn';
-	src: url('/static/font/MaisonNeue-Mono.woff2') format('woff2'),
-		url('/static/font/MaisonNeue-Mono.woff') format('woff'),
-		url('/static/font/MaisonNeue-Mono.ttf') format('truetype');
-	font-weight: normal;
-	font-style: normal;
 }
 
 @font-face {
-	font-family: 'mnn';
-	src: url('/static/font/MaisonNeue-MonoItalic.woff2') format('woff2'),
-		url('/static/font/MaisonNeue-MonoItalic.woff') format('woff'),
-		url('/static/font/MaisonNeue-MonoItalic.ttf') format('truetype');
-	font-weight: normal;
-	font-style: italic;
-} */
+  font-family: 'mn';
+  src: url('/static/font/MaisonNeue-LightItalic.woff2') format('woff2'),
+    url('/static/font/MaisonNeue-LightItalic.woff') format('woff'),
+    url('/static/font/MaisonNeue-LightItalic.ttf') format('truetype');
+  font-weight: 300;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'mnn';
+  src: url('/static/font/MaisonNeue-Mono.woff2') format('woff2'),
+    url('/static/font/MaisonNeue-Mono.woff') format('woff'),
+    url('/static/font/MaisonNeue-Mono.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'mnn';
+  src: url('/static/font/MaisonNeue-MonoItalic.woff2') format('woff2'),
+    url('/static/font/MaisonNeue-MonoItalic.woff') format('woff'),
+    url('/static/font/MaisonNeue-MonoItalic.ttf') format('truetype');
+  font-weight: normal;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'st';
+  src: url('/static/font/sentinel-book.woff') format('woff'),
+    url('/static/font/sentinel-book.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'st';
+  src: url('/static/font/sentinel-bold.woff') format('woff'),
+    url('/static/font/sentinel-bold.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+}

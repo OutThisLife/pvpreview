@@ -1,10 +1,11 @@
-import { flex } from '@/components/theme'
 import styled from 'styled-components'
 
-export default styled.span`
-  color: currentColor;
-  font-size: ${flex(13, 14)};
-  font-weight: 500;
-  letter-spacing: 0.08em;
+import { flex } from '../theme'
+
+export default styled.a`
+  font-weight: 700;
+  font-size: ${flex(11, 12)};
+  letter-spacing: 0.075em;
   text-transform: uppercase;
+  transition: 0.2s;
 `

@@ -1,18 +1,18 @@
 import Link from 'next/link'
 import styled from 'styled-components'
-import { palette } from 'styled-theme'
-
-import { flex } from '../theme'
+import { font } from 'styled-theme'
 
 const Wrapper = styled.a`
-  display: block;
-  color: ${palette('primary', 0)};
-  font-size: ${flex(13, 16)};
-  letter-spacing: -0.001em;
+  display: inline-block;
+  font-size: 1.9rem;
+  font-family: ${font('heading')};
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.03em;
 `
 
 export default () => (
-  <Link href="/">
-    <Wrapper>pvpreview</Wrapper>
+  <Link href="/" passHref>
+    <Wrapper>PvP/review</Wrapper>
   </Link>
 )
