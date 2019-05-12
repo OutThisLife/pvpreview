@@ -1,10 +1,11 @@
+import Footer from '@/components/Footer'
 import Grid from '@/components/Grid'
 import Header from '@/components/Header'
 import App, { Container } from 'next/app'
 import Head from 'next/head'
 import Router from 'next/router'
 import NProgress from 'nprogress'
-import styled, { ThemeProvider } from 'styled-components'
+import { ThemeProvider } from 'styled-components'
 
 import GlobalStyles, { pvpTheme, Wrapper } from './_styles'
 
@@ -44,6 +45,8 @@ export default class extends App {
                 <Component {...pageProps} />
               </Grid.Item>
             </Wrapper>
+
+            <Footer />
 
             <GlobalStyles />
           </>

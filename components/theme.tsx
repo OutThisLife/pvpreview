@@ -1,4 +1,4 @@
-import { tint } from 'polished'
+import { invert, tint } from 'polished'
 
 const pvpTheme = {
   fonts: {
@@ -10,15 +10,18 @@ const pvpTheme = {
   colours: {
     text: '#292929',
     bg: '#fff',
-    primary: '#0000EE',
-    secondary: '#FF2FCA',
+    primary: '#b12424',
+
+    get secondary() {
+      return invert(this.primary)
+    },
 
     get inactive() {
       return tint(0.5, this.text)
     },
 
     get loading() {
-      return tint(0.95, this.text)
+      return tint(0.9, this.text)
     }
   },
 

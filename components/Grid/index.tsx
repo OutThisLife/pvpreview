@@ -12,6 +12,7 @@ const Grid: any = styled.div<Props>`
   grid-row-gap: ${ifProp('gap', 'calc(var(--gs) / 2)', 0)};
   grid-auto-rows: minmax(max-content, var(--gs));
   grid-template-columns: repeat(var(--cols), 1fr);
+  align-items: ${prop('align', 'center')};
   margin: auto;
 
   ${ifProp(
@@ -40,6 +41,7 @@ interface Props {
   gap?: boolean
   cols?: string
   center?: boolean
+  align?: string
 }
 
 interface ItemProps {

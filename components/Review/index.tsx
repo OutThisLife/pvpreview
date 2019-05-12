@@ -6,9 +6,12 @@ import Link from 'next/link'
 import { useLayoutEffect, useState } from 'react'
 import slugify from 'slugify'
 import styled, { css } from 'styled-components'
-import { ifNotProp } from 'styled-tools'
+import { ifNotProp, ifProp } from 'styled-tools'
 
 const Wrapper = styled.figure`
+  --dist: 0px;
+  --gap: 2rem;
+
   display: flex;
   align-items: center;
   justify-content: center;
@@ -18,16 +21,15 @@ const Wrapper = styled.figure`
   ${ifNotProp(
     'hero',
     css`
-      --dist: 0px;
-      --gap: 2rem;
-
       cursor: pointer;
 
       &:not(:hover) {
         --dist: var(--gap);
       }
     `,
-    css``
+    css`
+      margin: var(--gap) auto;
+    `
   )}
 `
 
@@ -35,7 +37,6 @@ const Photo = styled.div`
   position: relative;
   height: 0px;
   overflow: hidden;
-  padding-top: calc(54% + var(--gs));
   overflow: hidden;
   background: var(--loading) center top / cover no-repeat;
 
@@ -49,7 +50,7 @@ const Photo = styled.div`
       transition: 0.2s;
     `,
     css`
-      padding-top: 33%;
+      padding-top: 26vmax;
       background-attachment: fixed;
     `
   )}
@@ -77,7 +78,30 @@ const Photo = styled.div`
       &:after {
         ${shine}
       }
-    `
+    `,
+    ifProp(
+      'hero',
+      css`
+        &:before {
+          content: '';
+          display: block;
+          position: absolute;
+          top: 0;
+          width: 100%;
+          height: 100%;
+          background: radial-gradient(
+              ellipse at center,
+              rgba(0, 0, 0, 0.2) 10%,
+              rgba(0, 0, 0, 0.8) 100%
+            ),
+            linear-gradient(
+              180deg,
+              rgba(0, 0, 0, 0.4) 5%,
+              rgba(0, 0, 0, 0) 100%
+            );
+        }
+      `
+    )
   )}
 
   img {
@@ -90,6 +114,8 @@ const Photo = styled.div`
     right: 0;
     left: 0;
     color: #fff;
+    line-height: 1;
+    font-family: 'st';
     text-align: center;
     margin: 0;
 
@@ -98,6 +124,7 @@ const Photo = styled.div`
       css`
         opacity: 0;
         bottom: calc(var(--dist) * -1);
+        font-size: 2rem;
         transition: 0.2s;
 
         ${Wrapper}:hover & {
@@ -106,9 +133,26 @@ const Photo = styled.div`
         }
       `,
       css`
-        bottom: 1rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        top: 0;
+        bottom: 0;
+        font-size: 4rem;
       `
     )}
+
+    strong {
+      display: block;
+      font-family: 'mnn';
+      letter-spacing: -0.2em;
+      margin: 0 0 0.5em;
+      padding: 0.5em 0.5em 0.4em;
+      outline: 1px dashed;
+      outline-offset: -0.3rem;
+      background: var(--primary);
+    }
   }
 `
 
@@ -172,7 +216,16 @@ export default ({
           style={{ backgroundImage: `url(${bg})` }}
           {...{ isLoaded, hero }}>
           <img src={bg} alt={title} />
-          <Heading size={hero ? 4 : 1.5}>{title}</Heading>
+          <Heading>
+            {hero ? (
+              <>
+                <strong>{Math.random().toFixed(1)} / 1</strong>
+                {title}
+              </>
+            ) : (
+              title
+            )}
+          </Heading>
         </Photo>
 
         <Caption>

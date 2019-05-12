@@ -48,6 +48,11 @@ export default createGlobalStyle`
   a {
     color: var(--text);
     text-decoration: none;
+    transition: .2s;
+
+    &:hover {
+      color: var(--primary);
+    }
   }
 
   figure {

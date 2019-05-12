@@ -6,5 +6,11 @@
       "src": "next.config.js",
       "use": "@now/next"
     }
+  ],
+  "routes": [
+    {
+      "src": "/review/(?<slug>[^/]+)$",
+      "dest": "/review?slug=$slug"
+    }
   ]
 }
