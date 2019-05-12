@@ -1,79 +1,129 @@
-import Flex from '@/components/Flex'
-import { useCallback, useEffect, useRef, useState } from 'react'
+import Modal from '@/components/Modal'
+import { useCallback, useRef, useState } from 'react'
+import ContentLoader from 'react-content-loader'
 import ReactPlayer, { ReactPlayerProps } from 'react-player'
 import styled, { css } from 'styled-components'
-import { ifProp } from 'styled-tools'
+import { size } from 'styled-theme'
+import { ifNotProp } from 'styled-tools'
 
-const Wrapper = styled(Flex)`
-  ${ifProp(
-    'isOpen',
+const Wrapper = styled(Modal)`
+  --w: 100%;
+  --h: 50vw;
+
+  @media (min-width: ${size('desktop')}) {
+    --h: 100%;
+  }
+
+  &.open {
+    --w: calc(100% - (var(--gs) * 2));
+
+    @media (min-width: ${size('tablet')}) {
+      --h: 65%;
+    }
+  }
+
+  + div {
+    margin-bottom: 1em;
+  }
+
+  > svg,
+  > svg rect,
+  > div {
+    width: var(--w) !important;
+    height: var(--h) !important;
+  }
+
+  ${ifNotProp(
+    'isLoaded',
     css`
-      z-index: 1000;
-      position: fixed;
-      top: 0;
-      right: 0;
-      bottom: 0;
-      left: 0;
-      background: rgba(0, 0, 0, 0.9);
+      > div {
+        display: none;
+      }
+    `,
+    css`
+      > svg {
+        display: none;
+      }
     `
   )}
-
-  iframe {
-    height: 100%;
-  }
 `
 
-export default (props: ReactPlayerProps) => {
-  const $player = useRef()
-  const [isOpen, toggle] = useState(false)
-  const [{ w, h }, setDimensions] = useState({ w: 0, h: 0 })
+export default ({ url }: Props) => {
+  const $player = useRef<ReactPlayerProps & any>()
+  const $div = useRef<HTMLElement & any>()
 
-  const width = isOpen ? '70%' : '100%'
-  const height = width
+  const [isLoaded, setLoaded] = useState<State['isLoaded']>(false)
+  const [isBroken, setBroken] = useState<State['isBroken']>(false)
 
-  const config = {
-    youtube: {
-      playerVars: { modestbranding: 1 }
-    }
-  }
+  const init = () =>
+    typeof $player.current === 'object' &&
+    'wrapper' in $player.current &&
+    $player.current.wrapper instanceof HTMLElement
 
-  useEffect(() => {
-    document.body.classList[isOpen ? 'add' : 'remove']('lock')
+  const onPlay = useCallback(
+    cb => {
+      if ($div.current instanceof HTMLElement && init()) {
+        const { clientWidth, clientHeight } = $player.current.wrapper
 
-    try {
-      if (!isOpen && $player.current.player.isPlaying) {
-        $player.current.player.player.stop()
+        $div.current.style.width = `${clientWidth}px`
+        $div.current.style.height = `${clientHeight}px`
       }
-    } catch (err) {
-      console.warn(err)
-    }
-  }, [isOpen])
 
-  const onPlay = useCallback(() => {
-    if ($player.current.wrapper instanceof HTMLElement) {
-      setDimensions({
-        w: `${$player.current.wrapper.clientWidth}px`,
-        h: `${$player.current.wrapper.clientHeight}px`
-      })
+      window.requestAnimationFrame(cb)
+    },
+    [$div, $player]
+  )
+
+  const onClose = useCallback(() => {
+    if (init() && $player.current.player.isPlaying) {
+      $player.current.player.player.stop()
     }
 
-    toggle(true)
-  }, [])
+    if ($div.current instanceof HTMLElement) {
+      $div.current.removeAttribute('style')
+    }
+  }, [$div, $player])
 
-  const onClick = useCallback(() => toggle(!isOpen), [isOpen])
+  const onReady = useCallback(() => setLoaded(true), [])
+  const onError = useCallback(() => setBroken(true), [])
+
+  if (isBroken) {
+    return null
+  }
 
   return (
     <>
-      <Wrapper {...{ isOpen, onClick }}>
-        <ReactPlayer
-          ref={$player}
-          controls
-          {...{ onPlay, width, height, config }}
-          {...props}
-        />
+      <Wrapper {...{ isLoaded, onClose }}>
+        {({ toggle }) => (
+          <>
+            <ContentLoader>
+              <rect x="0" y="0" rx="0" ry="0" />
+            </ContentLoader>
+
+            <ReactPlayer
+              ref={$player}
+              controls
+              onPlay={() => onPlay(() => toggle(true))}
+              {...{ url, onReady, onError, config }}
+            />
+          </>
+        )}
       </Wrapper>
 
-      {isOpen && <div style={{ width: w, height: h }} />}
+      <div ref={$div} />
     </>
   )
+}
+
+interface Props extends ReactPlayerProps {}
+
+interface State {
+  isLoaded: boolean
+  isBroken: boolean
+}
+
+const config: Partial<ReactPlayerProps['config']> = {
+  youtube: {
+    playerVars: { modestbranding: 1 }
+  }
 }

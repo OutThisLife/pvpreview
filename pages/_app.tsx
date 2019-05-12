@@ -44,9 +44,11 @@ export default class extends App {
               <Grid.Item as="main">
                 <Component {...pageProps} />
               </Grid.Item>
-            </Wrapper>
 
-            <Footer />
+              <Grid.Item>
+                <Footer />
+              </Grid.Item>
+            </Wrapper>
 
             <GlobalStyles />
           </>

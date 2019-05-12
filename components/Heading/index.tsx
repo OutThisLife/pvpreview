@@ -1,12 +1,7 @@
 import styled, { css } from 'styled-components'
-import { ifProp, prop } from 'styled-tools'
+import { ifProp } from 'styled-tools'
 
 export default styled.h2<Props>`
-  font-size: ${prop('size', 2.5)}rem;
-  font-weight: 700;
-  line-height: ${prop('lh', 1.2)};
-  letter-spacing: -0.01em;
-
   ${ifProp(
     'mono',
     css`

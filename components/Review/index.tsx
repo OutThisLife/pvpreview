@@ -1,16 +1,17 @@
-import { shine } from '@/components/Effects'
 import Heading from '@/components/Heading'
 import Tags from '@/components/Tags'
 import Timestamp from '@/components/Timestamp'
 import Link from 'next/link'
 import { useLayoutEffect, useState } from 'react'
+import ContentLoader from 'react-content-loader'
 import slugify from 'slugify'
 import styled, { css } from 'styled-components'
-import { ifNotProp, ifProp } from 'styled-tools'
+import { size } from 'styled-theme'
+import { ifNotProp } from 'styled-tools'
 
 const Wrapper = styled.figure`
   --dist: 0px;
-  --gap: 2rem;
+  --gap: var(--gs);
 
   display: flex;
   align-items: center;
@@ -30,79 +31,74 @@ const Wrapper = styled.figure`
     css`
       margin: var(--gap) auto;
     `
-  )}
+  )};
+
+  > a {
+    display: block;
+    width: 100%;
+
+    &:hover {
+      color: initial;
+    }
+  }
 `
 
 const Photo = styled.div`
   position: relative;
-  height: 0px;
-  overflow: hidden;
-  overflow: hidden;
+  width: 100%;
   background: var(--loading) center top / cover no-repeat;
+
+  @media (min-width: ${size('tablet')}) {
+    height: 0px;
+    overflow: hidden;
+  }
 
   ${ifNotProp(
     'hero',
     css`
       cursor: pointer;
-      width: 100%;
-      clip-path: inset(var(--dist));
-      padding-top: calc(54% + var(--gs));
+      clip-path: inset(var(--dist) var(--dist) 0);
       transition: 0.2s;
+
+      @media (min-width: ${size('tablet')}) {
+        clip-path: inset(var(--dist));
+        padding: calc(54% + var(--gs)) 0 0;
+      }
     `,
     css`
-      padding-top: 26vmax;
+      padding: 10vmax 0;
       background-attachment: fixed;
-    `
-  )}
 
-  ${ifNotProp(
-    'isLoaded',
-    css`
-      background-image: none !important;
-
-      &:before,
-      &:after {
+      &:before {
         content: '';
         display: block;
         position: absolute;
         top: 0;
         width: 100%;
         height: 100%;
-        transition: 0.3s;
+        background: radial-gradient(
+            ellipse at center,
+            rgba(0, 0, 0, 0.2) 10%,
+            rgba(0, 0, 0, 0.8) 100%
+          ),
+          linear-gradient(180deg, rgba(0, 0, 0, 0.4) 5%, rgba(0, 0, 0, 0) 100%);
       }
 
-      &:before {
-        background: var(--loading);
+      @media (min-width: ${size('tablet')}) {
+        padding: 23vmax 0 0;
       }
-
-      &:after {
-        ${shine}
-      }
-    `,
-    ifProp(
-      'hero',
-      css`
-        &:before {
-          content: '';
-          display: block;
-          position: absolute;
-          top: 0;
-          width: 100%;
-          height: 100%;
-          background: radial-gradient(
-              ellipse at center,
-              rgba(0, 0, 0, 0.2) 10%,
-              rgba(0, 0, 0, 0.8) 100%
-            ),
-            linear-gradient(
-              180deg,
-              rgba(0, 0, 0, 0.4) 5%,
-              rgba(0, 0, 0, 0) 100%
-            );
-        }
-      `
-    )
+    `
   )}
+
+  svg {
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    max-width: none;
+    min-width: 100%;
+    height: calc(100% + 1px);
+  }
 
   img {
     visibility: hidden;
@@ -122,14 +118,18 @@ const Photo = styled.div`
     ${ifNotProp(
       'hero',
       css`
-        opacity: 0;
-        bottom: calc(var(--dist) * -1);
         font-size: 2rem;
-        transition: 0.2s;
+        bottom: var(--dist);
 
-        ${Wrapper}:hover & {
-          opacity: 1;
-          bottom: calc(var(--dist) + 1rem);
+        @media (min-width: ${size('desktop')}) {
+          opacity: 0;
+          transition: 0.2s;
+          bottom: calc(var(--dist) * -1);
+
+          ${Wrapper}:hover & {
+            opacity: 1;
+            bottom: calc(var(--dist) + 1rem);
+          }
         }
       `,
       css`
@@ -160,10 +160,19 @@ const Caption = styled.figcaption`
   display: flex;
   flex-direction: column;
   text-align: center;
-  padding: calc(var(--gs) / 2);
+
+  ${ifNotProp(
+    'hero',
+    css`
+      padding: calc(var(--gs) / 2);
+    `,
+    css`
+      padding: var(--gap) 0 0;
+    `
+  )}
 
   strong {
-    display: block;
+    display: none;
     font-size: 1rem;
     margin-top: calc(var(--gap) * -1);
     transition: 0.2s;
@@ -171,6 +180,10 @@ const Caption = styled.figcaption`
     ${Wrapper}:hover & {
       opacity: 0;
       transform: translate(0, -1em);
+    }
+
+    @media (min-width: ${size('desktop')}) {
+      display: block;
     }
   }
 
@@ -194,41 +207,54 @@ export default ({
   const slug = slugify(title.toLowerCase())
   const [isLoaded, setLoaded] = useState(false)
 
-  useLayoutEffect(() => {
-    const im = new Image()
-    im.onload = () => window.requestAnimationFrame(() => setLoaded(true))
-    im.src = bg
-  }, [bg])
-
   const C = ({ children }) =>
     hero ? (
-      <>{children}</>
+      children
     ) : (
       <Link href={`/review?slug=${slug}`} as={`/review/${slug}`} passHref>
         <a>{children}</a>
       </Link>
     )
 
+  useLayoutEffect(() => {
+    const im = new Image()
+    im.onload = () => window.requestAnimationFrame(() => setLoaded(true))
+    im.src = bg
+
+    if (im.complete) {
+      setLoaded(true)
+    }
+  }, [bg])
+
   return (
-    <C>
-      <Wrapper {...{ hero }}>
+    <Wrapper {...{ hero }}>
+      <C>
         <Photo
           style={{ backgroundImage: `url(${bg})` }}
           {...{ isLoaded, hero }}>
-          <img src={bg} alt={title} />
-          <Heading>
-            {hero ? (
-              <>
-                <strong>{Math.random().toFixed(1)} / 1</strong>
-                {title}
-              </>
-            ) : (
-              title
-            )}
-          </Heading>
+          {!isLoaded ? (
+            <ContentLoader>
+              <rect x="0" y="0" rx="0" ry="0" width="100%" height="100%" />
+            </ContentLoader>
+          ) : (
+            <>
+              <img src={bg} alt={title} />
+
+              <Heading>
+                {hero ? (
+                  <>
+                    <strong>{Math.random().toFixed(1)} / 1</strong>
+                    {title}
+                  </>
+                ) : (
+                  title
+                )}
+              </Heading>
+            </>
+          )}
         </Photo>
 
-        <Caption>
+        <Caption {...{ hero }}>
           {hero || (
             <div>
               <strong>{title}</strong>
@@ -245,8 +271,8 @@ export default ({
             <Timestamp>November 23, 2004</Timestamp>
           </div>
         </Caption>
-      </Wrapper>
-    </C>
+      </C>
+    </Wrapper>
   )
 }
 

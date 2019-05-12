@@ -1,10 +1,3 @@
-import Reviews from '@/components/Reviews'
-import styled from 'styled-components'
+import Home from '.'
 
-const Wrapper = styled.section``
-
-export default () => (
-  <Wrapper>
-    <Reviews />
-  </Wrapper>
-)
+export default Home

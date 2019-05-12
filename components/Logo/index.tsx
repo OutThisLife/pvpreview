@@ -4,7 +4,7 @@ import { font } from 'styled-theme'
 
 const Wrapper = styled.a`
   display: inline-block;
-  font-size: 1.9rem;
+  font-size: 2.4rem;
   font-family: ${font('heading')};
   font-weight: 700;
   line-height: 1;

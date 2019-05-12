@@ -19,7 +19,7 @@ export default createGlobalStyle`
     ${Object.entries(pvpTheme.colours).map(([k, v]) => `--${k}: ${v};`)};
 
     @media (max-width: ${size('tablet')}) {
-      --gs: ${flex(20, 40)};
+      --gs: ${flex(30, 60)};
     }
   }
 
@@ -57,6 +57,28 @@ export default createGlobalStyle`
     &:hover {
       color: var(--primary);
     }
+  }
+
+  h1,h2,h3,h4,h5,h6 {
+    font-weight: 700;
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+
+    &:not(:first-child) {
+      margin: 2em 0 0.5em;
+    }
+  }
+
+  h1 {
+    font-size: 3rem;
+  }
+
+  h2 {
+    font-size: 1.5rem;
+  }
+
+  h3 {
+    font-size: 1.2rem;
   }
 
   figure {
@@ -122,12 +144,20 @@ export default createGlobalStyle`
     }
   }
 
+  .nprogress-busy  {
+    cursor: wait;
+
+    * {
+      pointer-events: none !important;
+    }
+  }
 `
 
 export const Wrapper = styled(Grid)`
   --sc: 2;
 
   padding: var(--gs) 0;
+  min-height: 100vh;
 
   > ${Grid.Item} {
     grid-column: var(--sc) / calc(var(--sc) * -1);
