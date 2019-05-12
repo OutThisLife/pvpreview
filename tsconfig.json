@@ -15,7 +15,7 @@
     "skipLibCheck": true,
     "baseUrl": "./",
     "lib": ["dom", "es2017"],
-    "typeRoots": ["./node_modules/@types"],
+    "typeRoots": ["./node_modules/@types", "./types"],
     "paths": {
       "@/*": ["./*"]
     },

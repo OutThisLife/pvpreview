@@ -1,15 +1,30 @@
-import Full from '@/components/Review/Single'
+import { Single } from '@/components/Reviews'
+import { Content, get } from '@/content'
 import styled from 'styled-components'
 
-const Wrapper = styled.section``
+const Wrapper = styled.section`
+  width: 100%;
+`
 
-export default () => (
+const Review = (props: Props) => (
   <Wrapper>
-    <Full
-      title="World of Warcraft"
-      bg={`/static/img/bg-${bgs[Math.floor(Math.random() * bgs.length)]}.jpg`}
-    />
+    <Single {...props} />
   </Wrapper>
 )
 
-const bgs = ['lol', 'bdo', 'wow']
+Review.getInitialProps = ({ query, res, req }) => {
+  try {
+    return get(query.slug || req.headers.referer.split('/review/')[1])
+  } catch (err) {
+    res.statusCode = 404
+    res.end('Not found')
+  }
+
+  return {}
+}
+
+export default Review
+
+interface Props extends Content {
+  slug: string
+}

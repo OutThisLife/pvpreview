@@ -5,7 +5,7 @@ import { size } from 'styled-theme'
 import { ifProp } from 'styled-tools'
 
 const Wrapper = styled(Flex)`
-  --isrc: url(${require('./exit.svg')});
+  --isrc: url(${require('./exit.svg?inline')});
 
   ${ifProp(
     'isOpen',

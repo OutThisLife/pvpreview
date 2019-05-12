@@ -1,32 +1,32 @@
-const withPlugins = require('next-compose-plugins')
-const withCSS = require('@zeit/next-css')
-const typescript = require('@zeit/next-typescript')
-const offline = require('next-offline')
+const compose = require('next-compose-plugins')
 const { PHASE_DEVELOPMENT_SERVER } = require('next/constants')
 
+const withCss = require('@zeit/next-css')
+const withTsc = require('@zeit/next-typescript')
+const withMdx = require('@next/mdx')
+const withSw = require('next-offline')
+const withImg = require('next-optimized-images')
+
 const plugins = [
-  withCSS,
-  typescript,
-  [offline, ['!', PHASE_DEVELOPMENT_SERVER]]
+  withCss,
+  withTsc,
+  withMdx,
+  [
+    withImg,
+    {
+      svgo: {
+        plugins: [{ removeViewbox: false }]
+      }
+    }
+  ],
+  [withSw, ['!', PHASE_DEVELOPMENT_SERVER]]
 ]
 
 const config = {
-  target: 'serverless',
-  webpack(config) {
-    config.module.rules.push({
-      test: /\.(png|jpg|gif|svg|ico)$/i,
-      use: [
-        {
-          loader: 'url-loader',
-          options: {
-            limit: 10e4
-          }
-        }
-      ]
-    })
-
-    return config
-  }
+  target: 'serverless'
 }
 
-module.exports = withPlugins(plugins, config)
+module.exports = compose(
+  plugins,
+  config
+)

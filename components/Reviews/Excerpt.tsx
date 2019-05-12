@@ -1,10 +1,10 @@
 import Heading from '@/components/Heading'
 import Tags from '@/components/Tags'
 import Timestamp from '@/components/Timestamp'
+import { ContentMeta } from '@/content'
+import useImageLoader from '@/hooks/useImageLoader'
 import Link from 'next/link'
-import { useLayoutEffect, useState } from 'react'
 import ContentLoader from 'react-content-loader'
-import slugify from 'slugify'
 import styled, { css } from 'styled-components'
 import { size } from 'styled-theme'
 import { ifNotProp } from 'styled-tools'
@@ -197,15 +197,16 @@ const Caption = styled.figcaption`
 `
 
 export default ({
-  bg,
-  title,
-  released,
+  hero = false,
+  img,
+  published,
+  rating,
+  slug,
   style = [],
-  types = [],
-  hero = false
+  title,
+  types = []
 }: Props) => {
-  const slug = slugify(title.toLowerCase())
-  const [isLoaded, setLoaded] = useState(false)
+  const [isLoaded] = useImageLoader(img)
 
   const C = ({ children }) =>
     hero ? (
@@ -216,21 +217,11 @@ export default ({
       </Link>
     )
 
-  useLayoutEffect(() => {
-    const im = new Image()
-    im.onload = () => window.requestAnimationFrame(() => setLoaded(true))
-    im.src = bg
-
-    if (im.complete) {
-      setLoaded(true)
-    }
-  }, [bg])
-
   return (
     <Wrapper {...{ hero }}>
       <C>
         <Photo
-          style={{ backgroundImage: `url(${bg})` }}
+          style={{ backgroundImage: `url(${img})` }}
           {...{ isLoaded, hero }}>
           {!isLoaded ? (
             <ContentLoader>
@@ -238,12 +229,12 @@ export default ({
             </ContentLoader>
           ) : (
             <>
-              <img src={bg} alt={title} />
+              <img src={img} alt={title} />
 
               <Heading>
                 {hero ? (
                   <>
-                    <strong>{Math.random().toFixed(1)} / 1</strong>
+                    <strong>{rating} / 1</strong>
                     {title}
                   </>
                 ) : (
@@ -261,26 +252,20 @@ export default ({
             </div>
           )}
 
-          <Tags tags={['3D', 'Fantasy']} />
-          <Tags
-            tags={['ELO', 'Arenas', 'Battlegrounds', 'World']}
-            divider=" + "
-          />
+          {style.length > 0 && <Tags tags={style} />}
+          {types.length > 0 && <Tags tags={types} divider=" + " />}
 
-          <div>
-            <Timestamp>November 23, 2004</Timestamp>
-          </div>
+          {published && (
+            <div>
+              <Timestamp date={published} />
+            </div>
+          )}
         </Caption>
       </C>
     </Wrapper>
   )
 }
 
-interface Props {
-  title: string
-  bg: string
+export interface Props extends ContentMeta {
   hero?: boolean
-  released?: Date
-  style?: string[]
-  types?: string[]
 }

@@ -1,4 +1,5 @@
 import Reviews from '@/components/Reviews'
+import content from '@/content'
 import styled from 'styled-components'
 
 const Wrapper = styled.section`
@@ -7,6 +8,6 @@ const Wrapper = styled.section`
 
 export default () => (
   <Wrapper>
-    <Reviews />
+    <Reviews {...{ content }} />
   </Wrapper>
 )
