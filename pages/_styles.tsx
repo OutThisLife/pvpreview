@@ -45,6 +45,10 @@ export default createGlobalStyle`
     background: var(--bg);
   }
 
+  .lock {
+    overflow: hidden;
+  }
+
   a {
     color: var(--text);
     text-decoration: none;

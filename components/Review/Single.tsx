@@ -2,13 +2,11 @@ import Copy from '@/components/Copy'
 import Grid from '@/components/Grid'
 import Heading from '@/components/Heading'
 import Label from '@/components/Label'
-import ReactPlayer from 'react-player'
+import Player from '@/components/Player'
 import styled from 'styled-components'
 import { size } from 'styled-theme'
 
 import Excerpt from './'
-
-const Player = props => <ReactPlayer width="100%" height="100%" {...props} />
 
 const Wrapper = styled(Grid)`
   --sc: 2;
