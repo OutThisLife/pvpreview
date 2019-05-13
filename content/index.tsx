@@ -1,19 +1,26 @@
-import slugify from 'slugify'
+import getConfig from 'next/config'
 
-import * as wow from './world-of-warcraft.mdx'
+const {
+  publicRuntimeConfig: { twitchId, reviews = [] }
+} = getConfig()
 
-const content = [wow].map((c: Content) => ({
-  ...c,
-  meta: {
-    ...c.meta,
-    slug: slugify((c.meta.title || '').toLowerCase())
+export const get = slug => {
+  if (reviews.includes(slug)) {
+    return {
+      ...require(`./${slug}`),
+      img: require(`./${slug}/bg.jpg`),
+      html: require(`./${slug}/content.md`)
+    }
   }
-}))
 
-export const get = slug => content.find(c => c.meta.slug === slug)
+  return {}
+}
+
+export const all = () => reviews.map(get)
 
 export interface Content {
-  default: (props) => JSX.Element
+  html: string
+  img: string
   meta: ContentMeta
   videos?: ContentVideo[]
 }
@@ -25,7 +32,6 @@ export interface ContentVideo {
 
 export interface ContentMeta {
   title: string
-  img: string
   rating: number
   slug?: string
   published?: Date
@@ -33,4 +39,4 @@ export interface ContentMeta {
   types?: string[]
 }
 
-export default content
+export default reviews

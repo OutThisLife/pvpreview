@@ -1,10 +1,10 @@
 export const meta = {
   rating: 0.3,
   title: 'World of Warcraft',
+  slug: 'world-of-warcraft',
   style: ['3D', 'Fantasy'],
   types: ['Arena', 'Battlegrounds', 'ELO'],
-  published: '11/24/04',
-  img: '/static/img/bg-wow.jpg'
+  published: '11/24/04'
 }
 
 export const videos = [
@@ -16,7 +16,3 @@ export const videos = [
     ]
   }
 ]
-
-# WoW
-
-Now I can write anything.

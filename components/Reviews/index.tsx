@@ -16,10 +16,10 @@ const Wrapper = styled(Grid)`
   }
 `
 
-export default ({ content = [] }: Props) => (
+export default ({ reviews = [] }: Props) => (
   <Wrapper>
-    {content.map(({ meta }) => (
-      <Excerpt key={meta.published.toString()} {...meta} />
+    {reviews.map(({ img, meta }) => (
+      <Excerpt key={meta.published.toString()} {...{ img }} {...meta} />
     ))}
   </Wrapper>
 )
@@ -28,5 +28,5 @@ export { default as Excerpt } from './Excerpt'
 export { default as Single } from './Single'
 
 interface Props {
-  content: Content[]
+  reviews: Content[]
 }
