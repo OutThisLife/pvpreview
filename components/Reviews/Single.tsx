@@ -9,6 +9,8 @@ import { size } from 'styled-theme'
 
 import Excerpt from './Excerpt'
 
+const { twitchId } = process.env
+
 const Wrapper = styled(Grid)`
   --sc: 4;
   --ec: 4;
@@ -65,7 +67,7 @@ export default ({ html, videos: initialVideos = [], img, meta }: Content) => {
       }&stream_type=live&limit=2`,
       {
         headers: {
-          'Client-ID': process.env.twitchId
+          'Client-ID': twitchId
         }
       }
     )

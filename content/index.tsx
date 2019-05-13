@@ -1,5 +1,7 @@
+const { reviews = [] } = process.env
+
 export const get = slug => {
-  if (process.env.reviews.includes(slug)) {
+  if (reviews.includes(slug)) {
     return {
       ...require(`./${slug}`),
       img: require(`./${slug}/bg.jpg`),
@@ -10,7 +12,7 @@ export const get = slug => {
   return {}
 }
 
-export const all = () => process.env.reviews.map(get)
+export const all = () => reviews.map(get)
 
 export interface Content {
   html: string
