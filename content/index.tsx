@@ -29,6 +29,7 @@ export interface ContentVideo {
 export interface ContentMeta {
   title: string
   rating: number
+  img?: string
   slug?: string
   published?: Date
   style?: string[]

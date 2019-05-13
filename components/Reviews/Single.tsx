@@ -1,15 +1,12 @@
 import Copy from '@/components/Copy'
 import Grid from '@/components/Grid'
 import Label from '@/components/Label'
-import Player from '@/components/Player'
 import { Content } from '@/content'
-import { Fragment, useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { size } from 'styled-theme'
 
+import Videos from '../Videos'
 import Excerpt from './Excerpt'
-
-const { twitchId } = process.env
 
 const Wrapper = styled(Grid)`
   --sc: 4;
@@ -19,6 +16,7 @@ const Wrapper = styled(Grid)`
     display: block;
     width: 100%;
     grid-column: var(--sc) / calc(var(--ec) * -1);
+    margin: calc(var(--gs) * 3) auto;
   }
 
   aside {
@@ -26,7 +24,7 @@ const Wrapper = styled(Grid)`
     display: block;
     width: 100%;
     text-align: center;
-    margin: calc(var(--gs) * 3) auto 0;
+    margin: auto;
 
     ${Label} {
       display: block;
@@ -49,6 +47,7 @@ const Wrapper = styled(Grid)`
 
     section {
       grid-column: var(--sc) / var(--ec);
+      margin: 0;
     }
 
     aside {
@@ -57,61 +56,20 @@ const Wrapper = styled(Grid)`
   }
 `
 
-export default ({ html, videos: initialVideos = [], img, meta }: Content) => {
-  const [videos, setVideos] = useState<Content['videos']>(initialVideos)
+export default ({ html, videos = [], img, meta }: Content) => (
+  <>
+    <Excerpt hero {...{ img }} {...meta} />
 
-  useEffect(() => {
-    fetch(
-      `https://api.twitch.tv/kraken/streams?game=${
-        meta.title
-      }&stream_type=live&limit=2`,
-      {
-        headers: {
-          'Client-ID': twitchId
-        }
-      }
-    )
-      .then(res => res.json())
-      .then(
-        r =>
-          'streams' in r &&
-          r.streams.length &&
-          setVideos(
-            videos.concat({
-              title: `Streams (<a href='//www.twitch.tv/directory/game/${
-                meta.title
-              }' target="_blank" rel='noopener noreferrer'>${r._total >>
-                0}+</a>)`,
-              items: r.streams.map(s => s.channel.url)
-            })
-          )
-      )
-      .catch(console.error)
-  }, [])
+    <Wrapper as="article" align="start">
+      <Grid.Item as="section">
+        <Copy dangerouslySetInnerHTML={{ __html: html }} />
+      </Grid.Item>
 
-  return (
-    <>
-      <Excerpt hero {...{ img }} {...meta} />
-
-      <Wrapper as="article" align="start">
-        <Grid.Item as="section">
-          <Copy dangerouslySetInnerHTML={{ __html: html }} />
+      {videos.length > 0 && (
+        <Grid.Item as="aside">
+          <Videos {...{ videos, meta }} />
         </Grid.Item>
-
-        {videos.length > 0 && (
-          <Grid.Item as="aside">
-            {videos.map(({ title, items = [] }) => (
-              <Fragment key={title}>
-                <Label as="span" dangerouslySetInnerHTML={{ __html: title }} />
-
-                {items.map((url, i) => (
-                  <Player key={title + i} {...{ url }} />
-                ))}
-              </Fragment>
-            ))}
-          </Grid.Item>
-        )}
-      </Wrapper>
-    </>
-  )
-}
+      )}
+    </Wrapper>
+  </>
+)

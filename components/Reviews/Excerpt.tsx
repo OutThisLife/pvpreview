@@ -2,9 +2,7 @@ import Heading from '@/components/Heading'
 import Tags from '@/components/Tags'
 import Timestamp from '@/components/Timestamp'
 import { ContentMeta } from '@/content'
-import useImageLoader from '@/hooks/useImageLoader'
 import Link from 'next/link'
-import ContentLoader from 'react-content-loader'
 import styled, { css } from 'styled-components'
 import { size } from 'styled-theme'
 import { ifNotProp } from 'styled-tools'
@@ -29,7 +27,11 @@ const Wrapper = styled.figure`
       }
     `,
     css`
-      margin: var(--gap) auto;
+      margin: var(--gap) auto 0;
+
+      @media (min-width: ${size('tablet')}) {
+        margin: var(--gap) auto;
+      }
     `
   )};
 
@@ -46,28 +48,29 @@ const Wrapper = styled.figure`
 const Photo = styled.div`
   position: relative;
   width: 100%;
-  background: var(--loading) center top / cover no-repeat;
-
-  @media (min-width: ${size('tablet')}) {
-    height: 0px;
-    overflow: hidden;
-  }
+  height: 0px;
+  overflow: hidden;
+  background: #000 center top / cover no-repeat;
 
   ${ifNotProp(
     'hero',
     css`
       cursor: pointer;
       clip-path: inset(var(--dist) var(--dist) 0);
+      padding: calc(54% + var(--gs)) 0 0;
       transition: 0.2s;
 
       @media (min-width: ${size('tablet')}) {
         clip-path: inset(var(--dist));
-        padding: calc(54% + var(--gs)) 0 0;
       }
     `,
     css`
-      padding: 10vmax 0;
+      padding: 45vmax 0 0;
       background-attachment: fixed;
+
+      @media (min-width: ${size('tablet')}) {
+        padding: 23vmax 0 0;
+      }
 
       &:before {
         content: '';
@@ -83,22 +86,8 @@ const Photo = styled.div`
           ),
           linear-gradient(180deg, rgba(0, 0, 0, 0.4) 5%, rgba(0, 0, 0, 0) 100%);
       }
-
-      @media (min-width: ${size('tablet')}) {
-        padding: 23vmax 0 0;
-      }
     `
   )}
-
-  svg {
-    display: block;
-    position: absolute;
-    top: 0;
-    left: 0;
-    max-width: none;
-    min-width: 100%;
-    height: calc(100% + 1px);
-  }
 
   img {
     visibility: hidden;
@@ -123,8 +112,8 @@ const Photo = styled.div`
 
         @media (min-width: ${size('desktop')}) {
           opacity: 0;
-          transition: 0.2s;
           bottom: calc(var(--dist) * -1);
+          transition: 0.2s;
 
           ${Wrapper}:hover & {
             opacity: 1;
@@ -206,13 +195,11 @@ export default ({
   title,
   types = []
 }: Props) => {
-  const [isLoaded] = useImageLoader(img)
-
   const C = ({ children }) =>
     hero ? (
       children
     ) : (
-      <Link href={`/review?slug=${slug}`} as={`/review/${slug}`} passHref>
+      <Link href={`/review?slug=${slug}`} d={`/review/${slug}`} passHref>
         <a>{children}</a>
       </Link>
     )
@@ -220,29 +207,19 @@ export default ({
   return (
     <Wrapper {...{ hero }}>
       <C>
-        <Photo
-          style={{ backgroundImage: `url(${img})` }}
-          {...{ isLoaded, hero }}>
-          {!isLoaded ? (
-            <ContentLoader>
-              <rect x="0" y="0" rx="0" ry="0" width="100%" height="100%" />
-            </ContentLoader>
-          ) : (
-            <>
-              <img src={img} alt={title} />
+        <Photo style={{ backgroundImage: `url(${img})` }} {...{ hero }}>
+          <img src={img} alt={title} />
 
-              <Heading>
-                {hero ? (
-                  <>
-                    <strong>{rating} / 1</strong>
-                    {title}
-                  </>
-                ) : (
-                  title
-                )}
-              </Heading>
-            </>
-          )}
+          <Heading>
+            {hero ? (
+              <>
+                <strong>{rating} / 1</strong>
+                {title}
+              </>
+            ) : (
+              title
+            )}
+          </Heading>
         </Photo>
 
         <Caption {...{ hero }}>

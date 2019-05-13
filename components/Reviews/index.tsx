@@ -19,7 +19,7 @@ const Wrapper = styled(Grid)`
 export default ({ reviews = [] }: Props) => (
   <Wrapper>
     {reviews.map(({ img, meta }) => (
-      <Excerpt key={meta.published.toString()} {...{ img }} {...meta} />
+      <Excerpt key={img} {...{ img }} {...meta} />
     ))}
   </Wrapper>
 )
