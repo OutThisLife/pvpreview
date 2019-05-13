@@ -24,7 +24,7 @@ const plugins = [
 
 const config = {
   target: 'serverless',
-  publicRuntimeConfig: {
+  env: {
     twitchId: 'w9gkqwqu67fn0x86ysbzffsf92qa8j',
     reviews: readdirSync('./content').filter(s =>
       lstatSync(join('./content', s)).isDirectory()

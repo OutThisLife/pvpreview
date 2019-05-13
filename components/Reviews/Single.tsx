@@ -3,16 +3,11 @@ import Grid from '@/components/Grid'
 import Label from '@/components/Label'
 import Player from '@/components/Player'
 import { Content } from '@/content'
-import getConfig from 'next/config'
 import { Fragment, useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { size } from 'styled-theme'
 
 import Excerpt from './Excerpt'
-
-const {
-  publicRuntimeConfig: { twitchId }
-} = getConfig()
 
 const Wrapper = styled(Grid)`
   --sc: 4;
@@ -70,7 +65,7 @@ export default ({ html, videos: initialVideos = [], img, meta }: Content) => {
       }&stream_type=live&limit=2`,
       {
         headers: {
-          'Client-ID': twitchId
+          'Client-ID': process.env.twitchId
         }
       }
     )
